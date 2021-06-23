@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <nav style="min-height: 1700px; min-width: 200px;" class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item table-hover">
+                            <a class="lead text-success nav-link active" type="button" href="{{ path('metrics')}}">
+                                <i class="fas fa-chart-line"></i>
+                                Метрика
+                            </a>
+                        </li>
+                        <li class="nav-item table-hover">
+                            <a class="lead text-success nav-link active" type="button" href="{{ path('home')}}">
+                                <i class="fab fa-mailchimp"></i>
+                                Главная
+                            </a>
+                        </li>
+                        <li class="nav-item table-hover">
+                            <a class="lead text-success nav-link active" type="button" href="{{ path('contacts')}}">
+                                <i class="far fa-address-book"></i>
+                                Контакты
+                            </a>
+                        </li>
+                        <li class="nav-item table-hover">
+                            <a class="lead text-success nav-link active" type="button" href="{{ path('about')}}">
+                                <i class="fas fa-eject"></i>
+                                О нас
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="col-md-8 ms-sm-auto col-lg-10 px-md-4">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

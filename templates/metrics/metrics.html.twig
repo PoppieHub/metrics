@@ -1,0 +1,270 @@
+{% extends 'baseView.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row mt-lg-2">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <h4 class="col-lg-3 page-title mt-2">{{ title }}</h4>
+                        <div class="col-lg-3 float-end">
+                            {% for info in app.flashes('info') %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>{{ info }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-lg-1 row-cols-xl-2">
+            <div class="col-6">
+                <table class="table table-hover table-borderless">
+                    <tbody>
+                        <th><p class="lead fw-bold text-black-50">Просмотров за сегодня:</p></th>
+                        <th><p class="lead fw-bold">{{ count }}</p></th>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6">
+                <table class="table table-hover table-borderless">
+                    <tbody>
+                    <th><p class="lead fw-bold text-black-50">Уникальных посетителей за сегодня:</p></th>
+                    <th><p class="lead fw-bold">{{ countUnique }}</p></th>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p class="display-5">За все время:</p>
+        <div class="row mt-lg-2 row-cols-xl-12">
+            <div class="col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Статистика устройств:</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <canvas id="devices-chart" width="600" height="640"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5" >
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Статистика по браузерам:</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <canvas id="browser-chart" width="1000" height="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Статистика по ос:</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <canvas id="os-chart" width="600" height="640"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-lg-2 row-cols-xl-12">
+            <div class="col-xl-8" style="margin-right: auto; margin-left: auto">
+                <div class="card">
+                    <div class="card-body" >
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Статистика по посещаемости за период:</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <canvas id="line-chart" width="1000" height="600"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-lg-2 row-cols-xl-12">
+            <div class="col-6">
+                <div class="card" style="background-color: aliceblue">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Доступные страницы сайта</p>
+                            </div>
+                            <div class="btn-block">
+                                <a href="{{ path('website_create')}}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            {% set count = 0 %}
+                            <table class="table table-hover table-sm table-centered mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Название</th>
+                                    <th>Url</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for website in websites %}
+                                    {% set count = count + 1 %}
+                                    <tr>
+                                        <th scope="row">{{ count }}</th>
+                                        <td><p class="lead">{{ website.name }}</p></td>
+                                        <td><p class="lead">{{ website.UrlWebsite }}</p></td>
+                                        <td>
+                                            <a href="{{ path('website_delete', {id: website.id})}}" type="button" class="btn-outline-danger "><i class="far fa-times-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card" style="background-color: lightyellow">
+                    <div class="card-body alert alert-dismissible fade show" role="alert">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="btn-block">
+                                <p class="lead">Статистика просмотров страниц:</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-borderless">
+                                <thead>
+                                <tr>
+                                    <th>Имя страницы</th>
+                                    <th class="text-center">Просмотры</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set allcount = 0 %}
+                                {% for website in websites %}
+                                    <tr>
+                                        <td><p class="lead">{{ website.name }}</p></td>
+                                        <td><p class="lead text-center fw-bold">{{ website.PageView }}</p></td>
+                                    </tr>
+                                    {% set allcount = allcount + website.PageView %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted fw-bold">Общее: {{ allcount}} </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var colors = [];
+        while (colors.length < 100) {
+            do {
+                var color = Math.floor((Math.random()*1000000)+1);
+            } while (colors.indexOf(color) >= 0);
+            colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
+        }
+
+        new Chart(document.getElementById("devices-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: {{ deviceType|raw }},
+                datasets: [
+                    {
+                        label: "Количество устройств",
+                        backgroundColor: colors,
+                        data: {{ deviceCount|raw }}
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Типы устройств по просмотрам страниц:'
+                }
+            }
+        });
+
+        new Chart(document.getElementById("os-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: {{ osType|raw }},
+                datasets: [
+                    {
+                        label: "Количество устройств",
+                        backgroundColor: colors.slice(10),
+                        data: {{ osCount|raw }}
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Типы ос по просмотрам страниц:'
+                }
+            }
+        });
+
+        new Chart(document.getElementById("browser-chart"), {
+            type: 'polarArea',
+            data: {
+                labels: {{ browsersType|raw }},
+                datasets: [
+                    {
+                        label: "Количество устройств",
+                        backgroundColor: colors.slice(20),
+                        data: {{ browsersCount|raw }}
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Типы браузеров посетителей'
+                }
+            }
+        });
+        new Chart(document.getElementById("line-chart"), {
+            type: 'line',
+            data: {
+                labels: {{ dates|raw }},
+                datasets: [{
+                    label: 'Общая статистика',
+                    data: {{ datesCounts|raw }},
+                    fill: false,
+                    borderColor: colors.slice(-1),
+                    tension: 0.1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Посещения по дням'
+                }
+            }
+        });
+    </script>
+{% endblock %}

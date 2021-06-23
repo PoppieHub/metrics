@@ -1,0 +1,20 @@
+{% extends 'baseView.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row no-gutters justify-content-center mt-5">
+            <div class="col-lg-6">
+
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="float-end">
+                    <button class="btn btn-success mt-3" type="submit">
+                        Добавить
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
